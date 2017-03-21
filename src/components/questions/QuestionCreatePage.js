@@ -56,9 +56,13 @@ class Question extends React.Component {
     super(props);
     this.state = {value: ''};
     this.addAnswer = this.addAnswer.bind(this);
+    this.removeAnswer = this.removeAnswer.bind(this);
+    this.id = this.id.bind(this);
     this.state = {
-      numAnswers: 1
+      numAnswers: 1,
+      answers: []
     };
+
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -73,12 +77,8 @@ class Question extends React.Component {
   }
 
   render(){
-    const answer = [];
 
-    // this.state.numChildren.map(children.push(<Answer number={children.length+1} />));
-    for (var k = 0; k < this.state.numAnswers; k += 1) {
-      answer.push(<Answer key={k} number={k} />);
-    }
+
     /* field answer, submit for Question, Add Answer on Click */
     return(
       <div className="panel-body">
@@ -93,7 +93,10 @@ class Question extends React.Component {
 
         <p><a href="#" onClick={this.addAnswer}>Add Another Answer</a></p>
         <div>
-          {answer}
+          {(this.state.answers.length) ? this.state.answers.map(
+            (answer,i)  =>
+             <Answer key={i} id={answer.id}removeAnswer={this.removeAnswer}/>
+          ):<span>Currently 0 Answers </span>}
         </div>
       </div>
 
@@ -102,18 +105,34 @@ class Question extends React.Component {
   }
 
 //Add Answer function
-
+   removeAnswer(id){
+     console.log(id, "Brisem ovaj id");
+     const answers = this.state.answers.filter(
+       answer => answer.id!=id
+     );
+     this.setState({answers});
+   }
    addAnswer () {
+     const ID = this.id();
+     console.log(ID,"ovo je id ");
+    const answers = [
+      ...this.state.answers,
+      {id:ID}
+    ];
     this.setState({
-      numAnswers: this.state.numAnswers + 1
+      answers
     });
+  }
+
+   id() {
+     return '_' + Math.random().toString(36).substr(2, 9);
   }
 }
 
 class Answer extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {value: ''};
+    this.state = {value: 'ss'};
 
     this.handleChange = this.handleChange.bind(this);
   }
@@ -123,14 +142,17 @@ class Answer extends React.Component {
   }
 /* submit for Answer*/
   render(){
+    const {id, removeAnswer } = this.props;
     return(
       <div className="panel-body">
         <form onSubmit={this.handleSubmit}>
+          <p>{this.state.value}</p>
           <label>
             Answer:
             <input type="text" value={this.state.value} onChange={this.handleChange} />
           </label>
           <input type="submit" value="Submit" />
+          <a onClick={() => removeAnswer(id)}>Remove Answer</a>
         </form>
       </div>
     );
