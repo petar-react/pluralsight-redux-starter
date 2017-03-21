@@ -15,17 +15,18 @@ class QuestionCreatePage extends React.Component {
     for (var i = 0; i < this.state.numQuestions; i += 1) {
       question.push(<Question key={i} number={i} > </Question>);
     }
-
+    //Question Form
     return(
       <div>
         <h1>Hello</h1>
+
         <QuestionForm  addQuestion={this.onAddQuestion.bind(this)}>
           {question}
         </QuestionForm>
       </div>
     );
   }
-
+//Add Question function
   onAddQuestion () {
     this.setState({
       numQuestions: this.state.numQuestions + 1
@@ -38,10 +39,9 @@ class QuestionCreatePage extends React.Component {
 class QuestionForm extends React.Component {
 
   render(){
-
+//field questions, On click Add Question
     return(
       <div className="card calculator">
-
         <p><a href="#" onClick={this.props.addQuestion}>Add Another Question</a></p>
         <div id="children-pane">
           {this.props.children}
@@ -50,7 +50,7 @@ class QuestionForm extends React.Component {
     );
   }
 }
-
+/* submit and change */
 class Question extends React.Component {
   constructor(props) {
     super(props);
@@ -79,6 +79,7 @@ class Question extends React.Component {
     for (var k = 0; k < this.state.numAnswers; k += 1) {
       answer.push(<Answer key={k} number={k} />);
     }
+    /* field answer, submit for Question, Add Answer on Click */
     return(
       <div className="panel-body">
         <form onSubmit={this.handleSubmit}>
@@ -100,13 +101,14 @@ class Question extends React.Component {
     );
   }
 
+//Add Answer function
+
    addAnswer () {
     this.setState({
       numAnswers: this.state.numAnswers + 1
     });
   }
 }
-
 
 class Answer extends React.Component {
   constructor(props) {
@@ -119,7 +121,7 @@ class Answer extends React.Component {
   handleChange(event) {
     this.setState({value: event.target.value});
   }
-
+/* submit for Answer*/
   render(){
     return(
       <div className="panel-body">
