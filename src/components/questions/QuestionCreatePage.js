@@ -95,7 +95,7 @@ class Question extends React.Component {
         <div>
           {(this.state.answers.length) ? this.state.answers.map(
             (answer,i)  =>
-             <Answer key={i} id={answer.id}removeAnswer={this.removeAnswer}/>
+             <Answer key={answer.id} id={answer.id}removeAnswer={this.removeAnswer}/>
           ):<span>Currently 0 Answers </span>}
         </div>
       </div>
