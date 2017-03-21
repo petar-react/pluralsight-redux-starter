@@ -1,5 +1,5 @@
 import React , {PropTypes} from 'react';
-
+//create question function
 class QuestionCreatePage extends React.Component {
   constructor () {
     super();
