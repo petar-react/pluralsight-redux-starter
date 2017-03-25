@@ -1,5 +1,5 @@
 import React , {PropTypes} from 'react';
-//create question function
+
 class QuestionCreatePage extends React.Component {
   constructor () {
     super();
@@ -8,57 +8,80 @@ class QuestionCreatePage extends React.Component {
     };
   }
   render(){
-
-    const question = [];
-
-    // this.state.numChildren.map(children.push(<Answer number={children.length+1} />));
-    for (var i = 0; i < this.state.numQuestions; i += 1) {
-      question.push(<Question key={i} number={i} > </Question>);
-    }
-    //Question Form
     return(
       <div>
         <h1>Hello</h1>
 
-        <QuestionForm  addQuestion={this.onAddQuestion.bind(this)}>
-          {question}
-        </QuestionForm>
+        <QuestionForm />
+
       </div>
     );
   }
-//Add Question function
-  onAddQuestion () {
-    this.setState({
-      numQuestions: this.state.numQuestions + 1
-    });
-  }
-
-
 }
 
 class QuestionForm extends React.Component {
 
+  constructor () {
+    super();
+    this.addQuestion = this.addQuestion.bind(this);
+    this.removeQuestion = this.removeQuestion.bind(this);
+    this.id = this.id.bind(this);
+    this.state = {
+      numQuestions: 0,
+      questions: []
+    };
+  }
+
   render(){
-//field questions, On click Add Question
+
     return(
-      <div className="card calculator">
-        <p><a href="#" onClick={this.props.addQuestion}>Add Another Question</a></p>
-        <div id="children-pane">
-          {this.props.children}
+      <div className="panel-body">
+
+
+        <p><a href="#" onClick={this.addQuestion}>Add Another Question</a></p>
+        <div>
+          {(this.state.questions.length) ? this.state.questions.map(
+            (question,i)  =>
+              <Question key={question.id} id={question.id} removeQuestion={this.removeQuestion}/>
+          ):<span>Currently 0 Questions </span>}
         </div>
       </div>
     );
   }
+
+
+  removeQuestion(id){
+    console.log(id, "Brisem ovaj id");
+    const questions = this.state.questions.filter(
+      question => question.id!=id
+    );
+    this.setState({questions});
+  }
+  addQuestion () {
+    const ID = this.id();
+    console.log(ID,"ovo je id ");
+    const questions = [
+      ...this.state.questions,
+      {id:ID}
+    ];
+    this.setState({
+      questions
+    });
+  }
+
+  id() {
+    return '_' + Math.random().toString(36).substr(2, 9);
+  }
 }
-/* submit and change */
+
 class Question extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {value: ''};
     this.addAnswer = this.addAnswer.bind(this);
     this.removeAnswer = this.removeAnswer.bind(this);
     this.id = this.id.bind(this);
     this.state = {
+      question: 'question',
       numAnswers: 1,
       answers: []
     };
@@ -68,43 +91,43 @@ class Question extends React.Component {
   }
 
   handleChange(event) {
-    this.setState({value: event.target.value});
+    console.log("menjam question");
+    console.log(event.target.question);
+    this.setState({question: event.target.value});
   }
 
   handleSubmit(event) {
-    alert('A name was submitted: ' + this.state.value);
     event.preventDefault();
   }
 
   render(){
 
-
-    /* field answer, submit for Question, Add Answer on Click */
+    const {id, removeQuestion } = this.props;
     return(
       <div className="panel-body">
         <form onSubmit={this.handleSubmit}>
+          <p>{this.state.question}</p>
           <label>
             Question:
-            <input type="text" value={this.state.value} onChange={this.handleChange} />
+            <input type="text" value={this.state.question} onChange={this.handleChange} />
           </label>
           <input type="submit" value="Submit" />
         </form>
 
 
         <p><a href="#" onClick={this.addAnswer}>Add Another Answer</a></p>
+        <a onClick={() => removeQuestion(id)}>Remove Question</a>
         <div>
           {(this.state.answers.length) ? this.state.answers.map(
             (answer,i)  =>
-             <Answer key={answer.id} id={answer.id}removeAnswer={this.removeAnswer}/>
+             <Answer key={answer.id} id={answer.id} removeAnswer={this.removeAnswer}/>
           ):<span>Currently 0 Answers </span>}
         </div>
       </div>
-
-
     );
   }
 
-//Add Answer function
+
    removeAnswer(id){
      console.log(id, "Brisem ovaj id");
      const answers = this.state.answers.filter(
@@ -132,24 +155,26 @@ class Question extends React.Component {
 class Answer extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {value: 'ss'};
+    this.state = {answer: ''};
 
     this.handleChange = this.handleChange.bind(this);
   }
 
   handleChange(event) {
-    this.setState({value: event.target.value});
+    console.log("menjam answer");
+    console.log(event.target.value);
+    this.setState({answer: event.target.value});
   }
-/* submit for Answer*/
+
   render(){
     const {id, removeAnswer } = this.props;
     return(
       <div className="panel-body">
         <form onSubmit={this.handleSubmit}>
-          <p>{this.state.value}</p>
+          <p>{this.state.answer}</p>
           <label>
             Answer:
-            <input type="text" value={this.state.value} onChange={this.handleChange} />
+            <input type="text" value={this.state.answer} onChange={this.handleChange} />
           </label>
           <input type="submit" value="Submit" />
           <a onClick={() => removeAnswer(id)}>Remove Answer</a>
