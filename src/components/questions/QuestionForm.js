@@ -23,7 +23,7 @@ class QuestionForm extends React.Component {
 
 
         <p><a href="#" onClick={this.addQuestion}>Add Another Question</a></p>
-        <input type="submit" value="Submit Questions and Answers"/>
+        <input type="submit" value="Submit Questions and Answers" onClick={this.props.onSave}/>
         <div>
           {(this.state.questions.length) ? this.state.questions.map(
             (question,i)  =>
@@ -55,8 +55,31 @@ class QuestionForm extends React.Component {
         ]
 
       }];
-    console.log(takeValue);
   }
+
+  saveValue: function(event) {
+  event.preventDefault();
+}
+
+  setFieldState: function(event) {
+  var questionID = event.target.questionID;
+  var answerID = event.target.answerID;
+  var questionValue = event.target.value;
+  var answerValue = event.target.value;
+
+
+}
+
+
+
+
+render: function(){
+  return(
+    <QuestionForm
+      questionID={this.state.questionID}
+      asnwerID={this.state.answerID}
+      onSave={this.saveValue}/>
+  );
 
 
   removeQuestion(id){
