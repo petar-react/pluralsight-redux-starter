@@ -40,7 +40,6 @@ class Question extends React.Component {
             Question:
             <input type="text" value={this.state.question} onChange={this.handleChange} />
           </label>
-          <input type="submit" value="Submit" />
         </form>
 
 

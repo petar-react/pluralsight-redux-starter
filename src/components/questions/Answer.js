@@ -24,7 +24,6 @@ class Answer extends React.Component {
             Answer:
             <input type="text" value={this.state.answer} onChange={this.handleChange} />
           </label>
-          <input type="submit" value="Submit" />
           <a onClick={() => removeAnswer(id)}>Remove Answer</a>
         </form>
       </div>
