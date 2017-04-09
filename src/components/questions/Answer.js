@@ -1,39 +1,64 @@
 import React , {PropTypes} from 'react';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import * as answerActions from '../../actions/answerActions';
 
 class Answer extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {answer: ''};
+    this.state = {
+      questionId:'',
+      id:'',
+      answer: ''
+    };
 
     this.handleChange = this.handleChange.bind(this);
   }
 
+  componentDidUpdate() {
+    this.props.actions.updateAnswerSuccess({questionId:this.state.questionId, id: this.state.id, value:this.state.question});
+  }
+
+  componentWillMount(){
+    if(this.state.id==='' && this.state.questionId==='')
+      this.setState({id:this.props.id, questionId: this.props.questionId})
+  }
+
   handleChange(event) {
-    console.log("menjam answer");
-    console.log(event.target.value);
     this.setState({answer: event.target.value});
   }
 
   render(){
-    const {id, removeAnswer } = this.props;
+    const {id, removeAnswer, questionId} = this.props;
     return(
       <div className="panel-body">
-        <form onSubmit={this.handleSubmit}>
+        <div>
           <p>{this.state.answer}</p>
           <label>
             Answer:
             <input type="text" value={this.state.answer} onChange={this.handleChange} />
           </label>
-          <input type="submit" value="Submit" />
           <a onClick={() => removeAnswer(id)}>Remove Answer</a>
-        </form>
+        </div>
       </div>
     );
   }
 }
 
+function mapStateToProps(state, ownProps) {
+  return {
+    answer: state.answer
+  };
+}
 
-export default Answer;
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(answerActions, dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Answer);
+
 
 
 

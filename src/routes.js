@@ -5,11 +5,14 @@ import HomePage from './components/home/HomePage';
 import AboutPage from './components/about/AboutPage';
 import CoursesPage from './components/course/CoursesPage';
 import QuestionCreatePage from './components/questions/QuestionCreatePage';
+import ManageCoursePage from './components/course/ManageCoursePage';
+
 
 export default (
   <Route path="/" component={App}>
     <IndexRoute component={HomePage}/>
     <Route path="courses" component={CoursesPage}/>
+    <Route path="course" component={ManageCoursePage} />
     <Route path="about" component={AboutPage}/>
     <Route path="questions" component={QuestionCreatePage}/>
   </Route>

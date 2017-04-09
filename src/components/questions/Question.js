@@ -1,5 +1,7 @@
 import  React, {PropTypes} from 'react';
-
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import * as questionActions from '../../actions/questionActions';
 import Answer from './Answer';
 
 
@@ -10,55 +12,53 @@ class Question extends React.Component {
     this.removeAnswer = this.removeAnswer.bind(this);
     this.id = this.id.bind(this);
     this.state = {
-      question: 'question',
+      id:'',
+      question: '',
       numAnswers: 1,
       answers: []
     };
 
     this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(event) {
-    console.log("menjam question");
-    console.log(event.target.question);
     this.setState({question: event.target.value});
   }
 
-  handleSubmit(event) {
-    event.preventDefault();
+  componentWillMount(){
+    if(this.state.id==='') this.setState({id:this.props.id})
+  }
+
+  componentDidUpdate() {
+    this.props.actions.updateQuestionSuccess({id: this.state.id, value:this.state.question});
   }
 
   render(){
 
-    const {id, removeQuestion } = this.props;
+    const {id, removeQuestion} = this.props;
+
     return(
       <div className="panel-body">
-        <form onSubmit={this.handleSubmit}>
-          <p>{this.state.question}</p>
+        <div>
           <label>
             Question:
             <input type="text" value={this.state.question} onChange={this.handleChange} />
           </label>
-          <input type="submit" value="Submit" />
-        </form>
-
+        </div>
 
         <p><a href="#" onClick={this.addAnswer}>Add Another Answer</a></p>
         <a onClick={() => removeQuestion(id)}>Remove Question</a>
         <div>
           {(this.state.answers.length) ? this.state.answers.map(
             (answer,i)  =>
-              <Answer key={answer.id} id={answer.id} removeAnswer={this.removeAnswer}/>
+              <Answer key={answer.id} id={answer.id} removeAnswer={this.removeAnswer} questionId={this.state.id}/>
           ):<span>Currently 0 Answers </span>}
         </div>
       </div>
     );
   }
 
-
   removeAnswer(id){
-    console.log(id, "Brisem ovaj id");
     const answers = this.state.answers.filter(
       answer => answer.id!=id
     );
@@ -66,7 +66,6 @@ class Question extends React.Component {
   }
   addAnswer () {
     const ID = this.id();
-    console.log(ID,"ovo je id ");
     const answers = [
       ...this.state.answers,
       {id:ID}
@@ -81,5 +80,18 @@ class Question extends React.Component {
   }
 }
 
+function mapStateToProps(state, ownProps) {
 
-export default Question;
+
+  return {
+    question: state.question
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(questionActions, dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Question);
