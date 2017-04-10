@@ -26,7 +26,7 @@ class Answer extends React.Component {
 
   componentAnswerRemoveId(questionId)
   {
-    this.props.action.removeId({questionId: this.state.questionId, splice:[ questionId, 1]});
+    this.props.action.updateAnswerRemoveId({questionId: this.state.questionId, splice:[ questionId, 1]});
   }
 
 

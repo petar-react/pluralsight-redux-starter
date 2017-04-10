@@ -35,8 +35,9 @@ class Question extends React.Component {
 
   componentQuestionRemoveId(id)
   {
-    this.props.action.updateRemoveId({id: this.state.id, splice:[ id, 1]});
+    this.props.action.updateQuestionRemoveId({id: this.state.id, splice:[ id, 1]});
   }
+
 
   render(){
 

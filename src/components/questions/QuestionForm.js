@@ -21,7 +21,6 @@ class QuestionForm extends React.Component {
   render(){
     return(
       <div className="panel-body">
-
         <p><a href="#" onClick={this.addQuestion}>Add Another Question</a></p>
         <div>
           {(this.state.questions.length) ? this.state.questions.map(
@@ -39,6 +38,8 @@ class QuestionForm extends React.Component {
       question => question.id!=id
     );
     this.setState({questions});
+
+
   }
   addQuestion () {
     const ID = this.id();

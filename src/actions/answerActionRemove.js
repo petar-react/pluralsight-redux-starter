@@ -5,16 +5,16 @@ import {beginAjaxCall, ajaxCallError} from './ajaxStatusActions';
 
 
 
- export  function updateQuestionRemoveId(id) {
- return {types: types.UPDATE_QUESTION_REMOVE_ID, id};
- }
+export  function updateAnswerRemoveId(questionId) {
+  return {types: types.UPDATE_ANSWER_REMOVE_ID, questionId};
+}
 
-export function updateRemoveId(id) {
+export function updateAnswerRemoveId(id) {
   return function (dispatch, getState) {
     dispatch(beginAjaxCall());
     console.log("Radi li?")
-    return questionApi.updateQuestionRemoveId(id).then(id => {
-      dispatch(updateQuestionRemoveId(id))
+    return questionApi.updateAnswerRemoveId(id).then(questionId => {
+      dispatch(updateAnswerRemoveId(questionId))
     }).catch(error => {
       dispatch(ajaxCallError(error));
       throw(error);
