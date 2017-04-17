@@ -1,7 +1,7 @@
 import expect from 'expect';
 
-describe('Our first test', () => {
-  it('should pass', () => {
-    expect(true).toEqual(true);
+describe('Nas prvi test', () => {
+  it('treba da prodje', () => {
+    expect(true).toEqual(true); //testiranje da li je true ili false
   });
 });

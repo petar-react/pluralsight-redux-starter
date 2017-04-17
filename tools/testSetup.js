@@ -1,29 +1,16 @@
-// Tests are placed alongside files under test.
-// This file does the following:
-// 1. Registers babel for transpiling our code for testing
-// 2. Disables Webpack-specific features that Mocha doesn't understand.
-// 3. Requires jsdom so we can test via an in-memory DOM in Node
-// 4. Sets up global vars that mimic a browser.
+process.env.NODE_ENV = 'test'; //test hotrealoding is disabled
 
-/*eslint-disable no-var*/
 
-// This assures the .babelrc dev config (which includes
-// hot module reloading code) doesn't apply for tests.
-process.env.NODE_ENV = 'test';
-
-// Register babel so that it will transpile ES6 to ES5
-// before our tests run.
 require('babel-register')();
 
-// Disable webpack-specific features for tests since
-// Mocha doesn't know what to do with them.
-require.extensions['.css'] = function () {return null;};
-require.extensions['.png'] = function () {return null;};
-require.extensions['.jpg'] = function () {return null;};
 
-// Configure JSDOM and set global variables
-// to simulate a browser environment for tests.
-var jsdom = require('jsdom').jsdom;
+require.extensions['.css'] = function () {return null;}; /*mocka ne razume ekstenzije, pa se ubacuje da bi prosao kroz liniju koda*/
+require.extensions['.png'] = function () {return null;}; /*mocka ne razume ekstenzije, pa se ubacuje da bi prosao kroz liniju koda*/
+require.extensions['.jpg'] = function () {return null;}; /*mocka ne razume ekstenzije, pa se ubacuje da bi prosao kroz liniju koda*/
+
+
+
+var jsdom = require('jsdom').jsdom; /*set jsdom , pomaze za testiranje a da se pri tom ne otvara browser,  i pomaze da simulira browser okurzenje*/
 
 var exposedProperties = ['window', 'navigator', 'document'];
 

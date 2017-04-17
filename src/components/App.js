@@ -1,19 +1,18 @@
-import React, {PropTypes} from 'react';
-import Header from './common/Header';
-import {connect} from 'react-redux';
+import React, {PropType} from 'react'; //
 
 class App extends React.Component {
-  render() {
+  render(){
     return(
-      <div className="container-fluid">
-        <Header/>
-        {this.props.children}
-      </div>
+    <div className="container-fluid">
+      <p>Header here</p>
+      {this.props.children}
+    </div>
     );
   }
 }
-App.groupTypes = {
-  children: PropTypes.object.isRequired
+
+App.propTypes = {
+  children: PropType.object.isRequired
 };
 
 export default App;
