@@ -3,21 +3,21 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as questionActions from '../../actions/questionActions';
 import Answer from './Answer';
-
+import TextInput from '../common/TextInput';
 
 class Question extends React.Component {
   constructor(props) {
     super(props);
-    this.addAnswer = this.addAnswer.bind(this);
-    this.removeAnswer = this.removeAnswer.bind(this);
-    this.id = this.id.bind(this);
     this.state = {
-      id:'',
+      id: '',
       question: '',
       numAnswers: 1,
       answers: []
     };
-
+    this.addAnswer = this.addAnswer.bind(this);
+    this.removeAnswer = this.removeAnswer.bind(this);
+    this.id = this.id.bind(this);
+    this.setAnswerOnTrue = this.setAnswerOnTrue.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
 
@@ -25,50 +25,88 @@ class Question extends React.Component {
     this.setState({question: event.target.value});
   }
 
-  componentWillMount(){
-    if(this.state.id==='') this.setState({id:this.props.id})
+  //pre nego sto se renderuje komponenta nasetujem id
+  componentWillMount() {
+    if (this.state.id === '') this.setState({id: this.props.id});
   }
 
+  //Okidam akciju u redux store-u nakon sto nasetujem state u ovoj komponenti
   componentDidUpdate() {
-    this.props.actions.updateQuestionSuccess({id: this.state.id, value:this.state.question});
+    this.props.actions.updateQuestionSuccess({id: this.state.id, value: this.state.question});
   }
 
-  render(){
+  render() {
 
     const {id, removeQuestion} = this.props;
 
-    return(
-      <div className="panel-body">
-        <div>
-          <label>
-            Question:
-            <input type="text" value={this.state.question} onChange={this.handleChange} />
-          </label>
-        </div>
+    return (
+      <div className="panel panel-default nested-fields">
+        <div className="panel-body">
+          <TextInput
+            name="question"
+            label="Question"
+            value={this.state.question}
+            onChange={this.handleChange}
+          />
 
-        <p><a href="#" onClick={this.addAnswer}>Add Another Answer</a></p>
-        <a onClick={() => removeQuestion(id)}>Remove Question</a>
-        <div>
-          {(this.state.answers.length) ? this.state.answers.map(
-            (answer,i)  =>
-              <Answer key={answer.id} id={answer.id} removeAnswer={this.removeAnswer} questionId={this.state.id}/>
-          ):<span>Currently 0 Answers </span>}
+          <div>
+            {(this.state.answers.length) ? this.state.answers.map(
+              (answer, i) =>
+                <Answer
+                  key={answer.id}
+                  id={answer.id}
+                  removeAnswer={this.removeAnswer}
+                  questionId={this.state.id}
+                  setAnswerOnTrue={this.setAnswerOnTrue}
+                  isTrue={answer.isTrue}/>
+            ) : <span>Currently 0 Answers </span>}
+          </div>
+
+          <input
+            type="submit"
+            value="Remove Question"
+            className="btn btn-default"
+            onClick={() => removeQuestion(id)}/>
+          <input
+            type="submit"
+            value="Add Answer"
+            className="btn btn-default"
+            onClick={this.addAnswer}/>
         </div>
       </div>
     );
   }
 
-  removeAnswer(id){
-    const answers = this.state.answers.filter(
-      answer => answer.id!=id
-    );
+  removeAnswer(id) {
+
+    if (this.state.answers.length > 0) {
+      const answers = this.state.answers.filter(
+        answer => answer.id != id
+      );
+      this.setState({answers});
+    }
+  }
+
+  setAnswerOnTrue(id) {
+
+    const answers = [...this.state.answers.map(answer => {
+      if (answer.id === id) {
+        answer.isTrue = (!answer.isTrue);
+        return answer;
+      } else {
+        answer.isTrue = false;
+        return answer;
+      }
+    })];
+
     this.setState({answers});
   }
-  addAnswer () {
+
+  addAnswer() {
     const ID = this.id();
     const answers = [
       ...this.state.answers,
-      {id:ID}
+      {id: ID, isTrue: false}
     ];
     this.setState({
       answers
@@ -80,18 +118,15 @@ class Question extends React.Component {
   }
 }
 
-function mapStateToProps(state, ownProps) {
-
-
-  return {
-    question: state.question
-  };
-}
-
+Question.propTypes = {
+  id: PropTypes.string.isRequired,
+  removeQuestion: PropTypes.func.isRequired,
+  actions: PropTypes.object.isRequired
+};
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(questionActions, dispatch)
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Question);
+export default connect(null, mapDispatchToProps)(Question);

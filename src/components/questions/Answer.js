@@ -2,6 +2,8 @@ import React , {PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as answerActions from '../../actions/answerActions';
+import TextInput from '../common/TextInput';
+
 
 class Answer extends React.Component {
   constructor(props) {
@@ -9,19 +11,25 @@ class Answer extends React.Component {
     this.state = {
       questionId:'',
       id:'',
-      answer: ''
+      answer: '',
+      isTrue: false
     };
-
     this.handleChange = this.handleChange.bind(this);
   }
 
-  componentDidUpdate() {
-    this.props.actions.updateAnswerSuccess({questionId:this.state.questionId, id: this.state.id, value:this.state.question});
-  }
-
+  //pre nego sto se renderuje komponenta nasetujem id id
   componentWillMount(){
     if(this.state.id==='' && this.state.questionId==='')
-      this.setState({id:this.props.id, questionId: this.props.questionId})
+      this.setState({id:this.props.id, questionId: this.props.questionId, isTrue:this.props.isTrue})
+  }
+
+  //Okidam akciju u redux store-u nakon sto nasetujem state u ovoj komponenti
+  componentDidUpdate() {
+    this.props.actions.updateAnswerSuccess({
+      questionId:this.state.questionId,
+      id: this.state.id,
+      value:this.state.answer,
+      isTrue:this.props.isTrue});
   }
 
   handleChange(event) {
@@ -29,26 +37,32 @@ class Answer extends React.Component {
   }
 
   render(){
-    const {id, removeAnswer, questionId} = this.props;
+    const {id, removeAnswer, questionId, setAnswerOnTrue, isTrue} = this.props;
+
     return(
-      <div className="panel-body">
-        <div>
-          <p>{this.state.answer}</p>
-          <label>
-            Answer:
-            <input type="text" value={this.state.answer} onChange={this.handleChange} />
-          </label>
-          <a onClick={() => removeAnswer(id)}>Remove Answer</a>
+      <div className = "panel panel-default nested-fields">
+        <div className="panel-body">
+            <TextInput
+              name="answer"
+              label="Answer"
+              value={this.state.answer}
+              onChange={this.handleChange}
+            />
+          <input
+            type="submit"
+            value="Remove Answer"
+            className="btn btn-default"
+            onClick={()=>removeAnswer(id)}/>
+          <button type="button"
+                  onClick={()=>setAnswerOnTrue(id)}
+                  className={isTrue ? "btn btn-success" : "btn btn-danger"}>
+            <span  className={isTrue ? "glyphicon glyphicon-ok-circle" : "glyphicon glyphicon-remove-circle"}></span>
+            {isTrue?"Answer is true":"Answer is false"}
+          </button>
         </div>
       </div>
     );
   }
-}
-
-function mapStateToProps(state, ownProps) {
-  return {
-    answer: state.answer
-  };
 }
 
 function mapDispatchToProps(dispatch) {
@@ -57,7 +71,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Answer);
+export default connect(null, mapDispatchToProps)(Answer);
 
 
 

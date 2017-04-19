@@ -9,7 +9,6 @@ export default function answerReducer(state = initialState.answers, action) {
         ...state.filter(answer => answer.id !== action.answer.id),
         Object.assign({}, action.answer)
       ];
-
     default:
       return state;
   }

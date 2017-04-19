@@ -1,9 +1,10 @@
-import React , {PropTypes} from 'react';
+import React, {PropTypes} from 'react';
 import Question from './Question';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import * as questionActions from '../../actions/questionActions';
-import * as answerActions from '../../actions/answerActions';
+import * as quizActions from '../../actions/quizActions';
+import TextInput from '../common/TextInput';
+import toastr from 'toastr';
 
 class QuestionForm extends React.Component {
 
@@ -12,39 +13,68 @@ class QuestionForm extends React.Component {
     this.addQuestion = this.addQuestion.bind(this);
     this.removeQuestion = this.removeQuestion.bind(this);
     this.id = this.id.bind(this);
+    this.createQuiz = this.createQuiz.bind(this);
+    this.handleChange = this.handleChange.bind(this);
     this.state = {
       numQuestions: 0,
-      questions: []
+      questions: [],
+      title: ''
     };
   }
 
-  render(){
-    return(
-      <div className="panel-body">
+  handleChange(event) {
+    this.setState({title: event.target.value});
+  }
 
-        <p><a href="#" onClick={this.addQuestion}>Add Another Question</a></p>
+  render() {
+    return (
+      <div className="panel-body">
+        <div className="panel panel-default nested-fields">
+          <div className="panel-body">
+            <TextInput
+              name="title"
+              label="Title"
+              value={this.state.title}
+              onChange={this.handleChange}
+            />
+          </div>
+        </div>
         <div>
           {(this.state.questions.length) ? this.state.questions.map(
-            (question,i)  =>
+            (question, i) =>
               <Question key={question.id} id={question.id} removeQuestion={this.removeQuestion}/>
-          ):<span>Currently 0 Questions </span>}
+          ) : <span>Currently 0 Questions </span>}
+        </div>
+        <input
+          type="submit"
+          value="Add Question"
+          className="btn btn-default"
+          onClick={this.addQuestion}/>
+        <div className="form-actions">
+          <hr/>
+          <input
+            type="submit"
+            value="Create Quiz"
+            className="btn btn-primary"
+            onClick={this.createQuiz}/>
         </div>
       </div>
     );
   }
 
 
-  removeQuestion(id){
+  removeQuestion(id) {
     const questions = this.state.questions.filter(
-      question => question.id!=id
+      question => question.id != id
     );
     this.setState({questions});
   }
-  addQuestion () {
+
+  addQuestion() {
     const ID = this.id();
     const questions = [
       ...this.state.questions,
-      {id:ID}
+      {id: ID}
     ];
     this.setState({
       questions
@@ -55,18 +85,48 @@ class QuestionForm extends React.Component {
     return '_' + Math.random().toString(36).substr(2, 9);
   }
 
+  prepareDataForRequest(quizTitle, qa, an){
+    let quiz = {id:this.id(),title: quizTitle, q: []};
+    qa.forEach( question => {
+      let answers = an.filter(answer => answer.questionId===question.id);
+      //Uvek moramo da posaljemo kopiju objekta  od props-a i state-a inace nastaje sranje
+      let qs = Object.assign({},question);
+      qs.a = [];
+      qs.a= Object.assign({}, answers);
+      quiz.q.push(qs);
+    });
+    return quiz;
+  }
+
+  createQuiz() {
+    console.log("udjem ovde");
+    let a = this.props.answers;
+    let q = this.props.questions;
+    let quizTitle = this.state.title;
+    let data = this.prepareDataForRequest(quizTitle, q, a);
+
+    let json  = JSON.stringify(data);
+    console.log(json);
+    this.props.actions.saveQuiz(data).then(() =>{toastr.success("zavrseno cuvanje")})
+      .catch(error => {
+        toastr.error(error);
+        console.log("zgreska prilikom cuvanja quiz-a")
+      });
+  }
+
 }
 
 function mapStateToProps(state, ownProps) {
-  return{
+  let res = {
     questions: state.questions,
     answers: state.answers
-  }
+  };
+  return res;
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators([questionActions, answerActions], dispatch)
+    actions: bindActionCreators(quizActions, dispatch)
   };
 }
 

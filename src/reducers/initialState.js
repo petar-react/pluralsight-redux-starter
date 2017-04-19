@@ -3,5 +3,6 @@ export default {
   courses: [],
   questions: [],
   answers:[],
+  quizzes: [],
   ajaxCallsInProgress: 0
 };
