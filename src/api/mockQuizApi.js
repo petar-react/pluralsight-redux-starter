@@ -64,7 +64,6 @@ class QuizzApi {
         // } else {
           quizzes.push(quiz);
        // }
-       debugger;
         resolve(quiz);
       }, delay);
     });

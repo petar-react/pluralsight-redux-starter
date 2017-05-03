@@ -90,6 +90,7 @@ class QuestionForm extends React.Component {
     qa.forEach( question => {
       let answers = an.filter(answer => answer.questionId===question.id);
       //Uvek moramo da posaljemo kopiju objekta  od props-a i state-a inace nastaje sranje
+
       let qs = Object.assign({},question);
       qs.a = [];
       qs.a= Object.assign({}, answers);
