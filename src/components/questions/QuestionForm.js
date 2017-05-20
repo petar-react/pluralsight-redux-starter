@@ -86,25 +86,29 @@ class QuestionForm extends React.Component {
   }
 
   prepareDataForRequest(quizTitle, qa, an){
-    let quiz = {id:this.id(),title: quizTitle, q: []};
+    let quiz = {id:this.id(),title: quizTitle, questions: []};
     qa.forEach( question => {
       let answers = an.filter(answer => answer.questionId===question.id);
       //Uvek moramo da posaljemo kopiju objekta  od props-a i state-a inace nastaje sranje
+       console.log(answers,"is redusera");
 
       let qs = Object.assign({},question);
-      qs.a = [];
-      qs.a= Object.assign({}, answers);
-      quiz.q.push(qs);
+      qs.answers = [... answers];
+      //qs.a= Object.assign({}, answers);
+     // console.log(qs.a,"after");
+      quiz.questions.push(qs);
+      console.log(quiz);
     });
+    console.log(quiz,"quiz");
     return quiz;
   }
 
   createQuiz() {
     console.log("udjem ovde");
-    let a = this.props.answers;
-    let q = this.props.questions;
+    let answers = this.props.answers;
+    let questions = this.props.questions;
     let quizTitle = this.state.title;
-    let data = this.prepareDataForRequest(quizTitle, q, a);
+    let data = this.prepareDataForRequest(quizTitle, questions, answers);
 
     let json  = JSON.stringify(data);
     console.log(json);

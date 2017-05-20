@@ -10,7 +10,8 @@ const courses = [
     watchHref: "http://www.pluralsight.com/courses/react-flux-building-applications",
     authorId: "cory-house",
     length: "5:08",
-    category: "JavaScript"
+    category: "JavaScript",
+    Description: "This course is about JavaScript, This course is about JavaScript, This course is about JavaScript... "
   },
   {
     id: "clean-code",
@@ -18,7 +19,8 @@ const courses = [
     watchHref: "http://www.pluralsight.com/courses/writing-clean-code-humans",
     authorId: "cory-house",
     length: "3:10",
-    category: "Software Practices"
+    category: "Software Practices",
+    Description: "This course is about Software Practices, This course is about Software Practices, This course is about Software Practices.."
   },
   {
     id: "architecture",
@@ -26,7 +28,8 @@ const courses = [
     watchHref: "http://www.pluralsight.com/courses/architecting-applications-dotnet",
     authorId: "cory-house",
     length: "2:52",
-    category: "Software Architecture"
+    category: "Software Architecture",
+    Description: "This course is about Software Architecture, This course is about Software Architecture, This course is about Software Architecture..."
   },
   {
     id: "career-reboot-for-developer-mind",
@@ -34,7 +37,8 @@ const courses = [
     watchHref: "http://www.pluralsight.com/courses/career-reboot-for-developer-mind",
     authorId: "cory-house",
     length: "2:30",
-    category: "Career"
+    category: "Career",
+    Description: "This course is about Career, This course is about Career, This course is about Career...."
   },
   {
     id: "web-components-shadow-dom",
@@ -42,7 +46,8 @@ const courses = [
     watchHref: "http://www.pluralsight.com/courses/web-components-shadow-dom",
     authorId: "cory-house",
     length: "5:10",
-    category: "HTML5"
+    category: "HTML5",
+    Description: "This course is about HTML5, This course is about HTML5, This course is about HTML5, This course is about HTML5..."
   }
 ];
 

@@ -9,6 +9,7 @@ const CourseListRow = ({course}) => {
       <td>{course.authorId}</td>
       <td>{course.category}</td>
       <td>{course.length}</td>
+      <td>More about this course click <Link to={'/description/' + course.id}>here</Link></td>
     </tr>
   );
 };

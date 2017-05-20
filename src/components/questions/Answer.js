@@ -28,7 +28,7 @@ class Answer extends React.Component {
     this.props.actions.updateAnswerSuccess({
       questionId:this.state.questionId,
       id: this.state.id,
-      value:this.state.answer,
+      label:this.state.answer,
       isTrue:this.props.isTrue});
   }
 

@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as courseActions from '../../actions/courseActions';
-import CourseForm from './CourseForm';
+import DescriptionCourseForm from './DescriptionCourseForm';
 import {authorsFormattedForDropdown} from '../../selectors/selectors';
 import toastr from 'toastr';
 
@@ -71,7 +71,7 @@ export class ManageCoursePage extends React.Component {
 
   render() {
     return (
-      <CourseForm
+      <DescriptionCourseForm
         course={this.state.course}
         onChange={this.updateCourseState}
         onSave={this.saveCourse}

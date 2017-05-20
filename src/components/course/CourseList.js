@@ -11,6 +11,7 @@ const CourseList = ({courses}) => {
         <th>Author</th>
         <th>Category</th>
         <th>Length</th>
+        <th>Description</th>
       </tr>
       </thead>
       <tbody>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 import TextInput from '../common/TextInput';
 import SelectInput from '../common/SelectInput';
 
@@ -35,6 +35,13 @@ const CourseForm = ({course, allAuthors, onSave, onChange, saving, errors}) => {
         onChange={onChange}
         error={errors.length}/>
 
+      <TextInput
+        name="Description"
+        label="Description"
+        value={course.Description}
+        onChange={onChange}
+        error={errors.length}/>
+
       <input
         type="submit"
         disabled={saving}
@@ -47,7 +54,7 @@ const CourseForm = ({course, allAuthors, onSave, onChange, saving, errors}) => {
 
 CourseForm.propTypes = {
   course: React.PropTypes.object.isRequired,
-  allAuthors: React.PropTypes.array,
+  allAuthors: React.PropTypes.array.isRequired,
   onSave: React.PropTypes.func.isRequired,
   onChange: React.PropTypes.func.isRequired,
   saving: React.PropTypes.bool,
